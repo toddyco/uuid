@@ -14,6 +14,8 @@ func New() UUID {
 	}
 }
 
+var Nil = googleUUID.Nil
+
 func Parse(s string) (UUID, error) {
 	u := UUID{}
 	var err error
@@ -41,7 +43,7 @@ func (u UUID) String() string {
 }
 
 func (u UUID) IsNil() bool {
-	return u.UUID == googleUUID.Nil
+	return u.UUID == Nil
 }
 
 func (u UUID) URN() string {
