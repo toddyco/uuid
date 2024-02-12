@@ -25,6 +25,8 @@ my `UUID` struct has these **receiver** functions:
 * `UnmarshalText(data []byte) error`
 * `MarshalBinary() ([]byte, error)`
 * `UnmarshalBinary(data []byte) error`
+* `MarshalJSON() ([]byte, error)`
+* `UnmarshalJSON(data []byte) error`
 
 These **non-receiver** helper functions are also provided:
 * `Parse(s string) (UUID, error)`
@@ -50,6 +52,6 @@ echo "v$VERSION-$(git show -s --format=%cd --date=format:%Y%m%d%H%M%S)-$(git rev
 For example:
 
 ```
-VERSION=1.3.1
+VERSION=1.6.0
 echo "v$VERSION-$(git show -s --format=%cd --date=format:%Y%m%d%H%M%S)-$(git rev-parse --short=12 HEAD)"
 ```

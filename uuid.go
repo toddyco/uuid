@@ -2,6 +2,7 @@ package uuid
 
 import (
 	"database/sql/driver"
+	"encoding/json"
 	googleUUID "github.com/google/uuid"
 )
 
@@ -32,10 +33,17 @@ func Parse(s string) (UUID, error) {
 	return u, err
 }
 
-type UUID struct {
-	UUID googleUUID.UUID
+func MustParse(s string) UUID {
+	u := UUID{}
+	u.UUID = googleUUID.MustParse(s)
+	u.Str = u.UUID.String()
 
-	Str string
+	return u
+}
+
+type UUID struct {
+	UUID googleUUID.UUID `json:"uuid"`
+	Str  string          `json:",omitempty"`
 }
 
 func (u UUID) String() string {
@@ -78,4 +86,19 @@ func (u *UUID) UnmarshalBinary(data []byte) error {
 	err := u.UUID.UnmarshalBinary(data)
 	u.Str = u.UUID.String()
 	return err
+}
+
+func (u UUID) MarshalJSON() ([]byte, error) {
+	return json.Marshal(u)
+}
+
+func (u *UUID) UnmarshalJSON(data []byte) error {
+	err := json.Unmarshal(data, u)
+
+	if err != nil {
+		return err
+	}
+
+	u.Str = u.UUID.String()
+	return nil
 }
