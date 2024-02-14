@@ -89,7 +89,7 @@ func (u *UUID) UnmarshalBinary(data []byte) error {
 }
 
 func (u UUID) MarshalJSON() ([]byte, error) {
-	return json.Marshal(u)
+	return json.Marshal(u.Str)
 }
 
 func (u *UUID) UnmarshalJSON(data []byte) error {
