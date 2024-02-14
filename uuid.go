@@ -2,7 +2,6 @@ package uuid
 
 import (
 	"database/sql/driver"
-	"encoding/json"
 	googleUUID "github.com/google/uuid"
 )
 
@@ -86,19 +85,4 @@ func (u *UUID) UnmarshalBinary(data []byte) error {
 	err := u.UUID.UnmarshalBinary(data)
 	u.Str = u.UUID.String()
 	return err
-}
-
-func (u UUID) MarshalJSON() ([]byte, error) {
-	return json.Marshal(u.Str)
-}
-
-func (u *UUID) UnmarshalJSON(data []byte) error {
-	err := json.Unmarshal(data, u)
-
-	if err != nil {
-		return err
-	}
-
-	u.Str = u.UUID.String()
-	return nil
 }
