@@ -88,7 +88,8 @@ func TestUUID_UnmarshalBinary(t *testing.T) {
 
 func TestUUID_UnmarshalJSON(t *testing.T) {
 	_uGood := `"39662fb2-f1a0-4142-b936-a8e4fe52db65"`
-	_uBad := `"39662fb2-f1a0-4142-b936-a8e4fe52dbxx"`
+	_uBad1 := `"39662fb2-f1a0-4142-b936-a8e4fe52dbxx"`
+	_uBad2 := `2`
 
 	u := UUID{}
 	err := json.Unmarshal([]byte(_uGood), &u)
@@ -97,8 +98,22 @@ func TestUUID_UnmarshalJSON(t *testing.T) {
 	assert.Nil(t, err)
 
 	u = UUID{}
-	err = json.Unmarshal([]byte(_uBad), &u)
+	err = json.Unmarshal([]byte(_uBad1), &u)
 
 	assert.Equal(t, googleUUID.Nil.String(), u.Str)
 	assert.Error(t, err)
+
+	u = UUID{}
+	err = json.Unmarshal([]byte(_uBad2), &u)
+
+	assert.Equal(t, googleUUID.Nil.String(), u.Str)
+	assert.Error(t, err)
+}
+
+func TestUUID_MarshalJSON(t *testing.T) {
+	u := UUID{}
+	json.Unmarshal([]byte(`"39662fb2-f1a0-4142-b936-a8e4fe52db65"`), &u)
+
+	j, _ := json.Marshal(u)
+	assert.Equal(t, `"39662fb2-f1a0-4142-b936-a8e4fe52db65"`, string(j))
 }
